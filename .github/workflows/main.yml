@@ -1,5 +1,5 @@
 name: Node setup example 
-on: push
+on: workflow_dispatch
 jobs: 
   setup-node:
     runs-on: ubuntu-latest
