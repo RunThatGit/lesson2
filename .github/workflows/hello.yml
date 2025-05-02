@@ -1,0 +1,30 @@
+name: Create AWS IAM user
+on:
+  workflow_dispatch:
+    inputs:
+      username:  
+        description: hello please put the username here
+        required: true 
+
+#this is actually a way to make you guys understand about AWS cli login in using your IAM user whihc should have the role to create and assign policies 
+
+jobs: 
+  create_user:
+    runs-on: ubuntu_latest
+    steps:
+      - name: Configure AWS credentials 
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: 'us-east-1'
+      - name: create user 
+        run: | 
+          echo "creating user: ${{github.event.input.username}}"
+          aws iam create-user --user-name ${{github.event.input.username}}
+      - name: Attach policy 
+        run: | 
+          aws iam attach-user-policy \
+          --user-name ${{github.event.input.username}}
+          --policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+
