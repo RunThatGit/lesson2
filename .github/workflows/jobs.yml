@@ -1,0 +1,14 @@
+name: Dependent jobs example
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: build step
+        run: echo "building blocks"
+  test: 
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: echo "testing"
